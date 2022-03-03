@@ -36,9 +36,7 @@ export const deleteImage = async (image) => {
 };
 
 export const filePath = (filename) => {
-  const urlBase =
-    process.env.URL_BASE || "http://localhost:" + (config.PORT || 8080);
-  return `${urlBase}/images/${filename}`;
+  return `/images/${filename}`;
 };
 
 export const toObj = (obj) => JSON.parse(JSON.stringify(obj));
