@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { returnMessage } from "../../utils/functions.js";
-
-import productsApi from "../../api/products.js";
 import cartApi from "../../api/carts.js";
-import { sendMail } from "../../services/mailer.js";
-import config from "../../config.js";
-import twilioClient from "../../services/twilio.js";
+import productsApi from "../../api/products.js";
 import { apiAuth } from "../../auth/index.js";
+import config from "../../config.js";
+import { sendMail } from "../../services/mailer.js";
+import twilioClient from "../../services/twilio.js";
+import { returnMessage } from "../../utils/functions.js";
 
 const cartApiRouter = Router();
 

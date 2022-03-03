@@ -1,9 +1,8 @@
+import bCrypt from "bcrypt";
 import fs from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import config from "../config.js";
 import logger from "../services/logging.js";
-import bCrypt from "bcrypt";
 
 const filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(filename);
