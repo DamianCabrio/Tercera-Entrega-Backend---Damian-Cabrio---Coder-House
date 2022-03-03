@@ -1,5 +1,6 @@
 import { Router } from "express";
 import productsApi from "../../api/products.js";
+import { adminAuth } from "../../auth/index.js";
 import upload from "../../services/upload.js";
 
 const productsApiRouter = new Router();
@@ -20,25 +21,35 @@ productsApiRouter.get("/:id", async (req, res) => {
 });
 
 //POST
-productsApiRouter.post("/", upload.single("thumbnail"), async (req, res) => {
-  const product = req.body;
-  const result = await productsApi.createOne(product, req.file);
-  res.status(result.code).json(result);
-});
+productsApiRouter.post(
+  "/",
+  upload.single("thumbnail"),
+  adminAuth,
+  async (req, res) => {
+    const product = req.body;
+    const result = await productsApi.createOne(product, req.file);
+    res.status(result.code).json(result);
+  }
+);
 
 //UPDATE
-productsApiRouter.put("/:id", upload.single("thumbnail"), async (req, res) => {
-  const id = /^\d+$/.test(req.params.id)
-    ? parseInt(req.params.id)
-    : req.params.id;
-  const product = req.body;
-  const result = await productsApi.updateOneById(id, product, req.file);
+productsApiRouter.put(
+  "/:id",
+  upload.single("thumbnail"),
+  adminAuth,
+  async (req, res) => {
+    const id = /^\d+$/.test(req.params.id)
+      ? parseInt(req.params.id)
+      : req.params.id;
+    const product = req.body;
+    const result = await productsApi.updateOneById(id, product, req.file);
 
-  res.status(result.code).json(result);
-});
+    res.status(result.code).json(result);
+  }
+);
 
 //DELETE
-productsApiRouter.delete("/:id", async (req, res) => {
+productsApiRouter.delete("/:id", adminAuth, async (req, res) => {
   const id = /^\d+$/.test(req.params.id)
     ? parseInt(req.params.id)
     : req.params.id;
