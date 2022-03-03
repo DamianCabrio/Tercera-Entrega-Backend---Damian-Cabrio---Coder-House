@@ -117,7 +117,7 @@ function generateNewUserHtml(user) {
       Teléfono: ${user.phoneNumber}
     </p>
     <p>Avatar:</p><br>
-    <img src='${user.avatar}' width='300'>
+    <img src='${config.URL_BASE}${user.avatar}' width='300'>
     <p>
       Edad: ${user.age}
     </p>
