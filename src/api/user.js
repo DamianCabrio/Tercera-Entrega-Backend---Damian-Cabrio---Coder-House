@@ -1,32 +1,30 @@
 import mongoose from "mongoose";
+
 import Container from "../containers/Container.js";
-import { deleteImage, returnMessage } from "../utils/functions.js";
+import {deleteImage, returnMessage} from "../utils/functions.js";
 
 class UsersApi extends Container {
   constructor() {
     super(
-      "users",
-      new mongoose.Schema(
-        {
-          name: { type: String, required: true },
-          surname: { type: String, required: true },
-          email: { type: String, required: true, unique: true },
-          password: { type: String },
-          username: { type: String, required: true, unique: true },
-          phoneNumber: { type: String, required: true },
-          role: { type: String, required: true, default: "user" },
-          avatar: {
-            type: String,
-            required: true,
-            default: "https://avatars.dicebear.com/api/identicon/default.png",
+        "users",
+        new mongoose.Schema({
+          name : {type : String, required : true},
+          surname : {type : String, required : true},
+          email : {type : String, required : true, unique : true},
+          password : {type : String},
+          username : {type : String, required : true, unique : true},
+          phoneNumber : {type : String, required : true},
+          role : {type : String, required : true, default : "user"},
+          avatar : {
+            type : String,
+            required : true,
+            default : "https://avatars.dicebear.com/api/identicon/default.png",
           },
-          age: { type: Number, required: true, default: 0 },
-          address: { type: String, required: true },
+          age : {type : Number, required : true, default : 0},
+          address : {type : String, required : true},
         },
-        { timestamps: true }
-      ),
-      "Usuario"
-    );
+                            {timestamps : true}),
+        "Usuario");
   }
 
   async createOne(user) {

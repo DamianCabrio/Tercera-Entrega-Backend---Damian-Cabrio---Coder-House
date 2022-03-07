@@ -1,31 +1,27 @@
 import bCrypt from "bcrypt";
 import fs from "fs";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+import {dirname} from "path";
+import {fileURLToPath} from "url";
+
 import logger from "../services/logging.js";
 
 const filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(filename);
 
-export const returnMessage = (
-  isError,
-  code,
-  message,
-  payload,
-  error = undefined
-) => {
-  if (code >= 500) {
-    logger.error(`${message} ${error || ""}`);
-  } else if (code >= 400) {
-    logger.warn(message);
-  }
-  return {
-    status: isError ? "error" : "success",
-    code,
-    message,
-    payload,
-  };
-};
+export const returnMessage =
+    (isError, code, message, payload, error = undefined) => {
+      if (code >= 500) {
+        logger.error(`${message} ${error || ""}`);
+      } else if (code >= 400) {
+        logger.warn(message);
+      }
+      return {
+        status : isError ? "error" : "success",
+        code,
+        message,
+        payload,
+      };
+    };
 
 export const deleteImage = async (image) => {
   const filePath = __dirname + "/../../public/images/" + image.split("/")[4];
@@ -34,9 +30,7 @@ export const deleteImage = async (image) => {
   }
 };
 
-export const filePath = (filename) => {
-  return `/images/${filename}`;
-};
+export const filePath = (filename) => { return `/images/${filename}`;};
 
 export const toObj = (obj) => JSON.parse(JSON.stringify(obj));
 
