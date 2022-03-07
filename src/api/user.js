@@ -14,6 +14,7 @@ class UsersApi extends Container {
           password: { type: String },
           username: { type: String, required: true, unique: true },
           phoneNumber: { type: String, required: true },
+          role: { type: String, required: true, default: "user" },
           avatar: {
             type: String,
             required: true,

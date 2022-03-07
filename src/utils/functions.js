@@ -58,3 +58,11 @@ export function createHash(password) {
 export function isValidPassword(user, password) {
   return bCrypt.compareSync(password, user.payload.password);
 }
+
+export const cookieExtractor = (req) => {
+  let token = null;
+  if (req && req.cookies) {
+    token = req.cookies["JWT_COOKIE"];
+  }
+  return token;
+};

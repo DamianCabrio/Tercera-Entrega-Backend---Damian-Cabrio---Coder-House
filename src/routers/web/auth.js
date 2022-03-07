@@ -1,7 +1,10 @@
 import { Router } from "express";
-import passport from "passport";
 import path from "path";
+import jwt from "jsonwebtoken";
+import { passportCall } from "../../services/passport-config.js";
 import upload from "../../services/upload.js";
+import config from "../../config.js";
+import { checkAuthorization } from "../../auth/index.js";
 
 const authWebRouter = new Router();
 
@@ -10,8 +13,7 @@ authWebRouter.get("/", (_, res) => {
 });
 
 authWebRouter.get("/login", (req, res) => {
-  const name = req.session?.name;
-  if (name) {
+  if (req.user) {
     res.redirect("/");
   } else {
     res.sendFile(path.join(process.cwd(), "/views/login.html"));
@@ -19,56 +21,48 @@ authWebRouter.get("/login", (req, res) => {
 });
 
 authWebRouter.get("/register", (req, res) => {
-  const name = req.session?.name;
-  if (name) {
+  if (req.user) {
     res.redirect("/");
   } else {
     res.sendFile(path.join(process.cwd(), "/views/register.html"));
   }
 });
 
-authWebRouter.get("/logout", (req, res) => {
-  const name = req.session?.name;
-  if (name) {
-    req.session.destroy((err) => {
-      if (!err) {
-        res.render(path.join(process.cwd(), "/views/pages/logout.ejs"), {
-          name,
-        });
-      } else {
-        res.redirect("/");
-      }
-    });
-  } else {
-    res.redirect("/");
+authWebRouter.get(
+  "/logout",
+  passportCall("jwt"),
+  checkAuthorization(["admin", "user"]),
+  (req, res) => {
+    if (req.user) {
+      res.clearCookie("JWT_COOKIE");
+    }
+    res.redirect("/login");
   }
-});
+);
 
 authWebRouter.post(
   "/register",
   upload.single("avatar"),
-  passport.authenticate("signup", {
-    failureRedirect: "/register?error=Error al registrarse",
-  }),
+  passportCall("signup"),
   (req, res) => {
-    const { name, id } = req.user.payload;
-    req.session.name = name;
-    req.session.userId = id;
+    const user = req.user;
+    const token = jwt.sign(user, config.JWT_SECRET);
+    res.cookie("JWT_COOKIE", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
     res.redirect("/");
   }
 );
 
-authWebRouter.post(
-  "/login",
-  passport.authenticate("login", {
-    failureRedirect: "/login?error=Error al iniciar sesión",
-  }),
-  (req, res) => {
-    const { name, id } = req.user.payload;
-    req.session.name = name;
-    req.session.userId = id;
-    res.redirect("/");
-  }
-);
+authWebRouter.post("/login", passportCall("login"), (req, res) => {
+  const user = req.user;
+  const token = jwt.sign(user, config.JWT_SECRET);
+  res.cookie("JWT_COOKIE", token, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  });
+  res.redirect("/");
+});
 
 export default authWebRouter;
