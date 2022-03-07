@@ -1,23 +1,7 @@
-export function webAuth(req, res, next) {
-  if (req.session?.name) {
-    next();
-  } else {
-    res.redirect("/login");
-  }
-}
-
-export function apiAuth(req, res, next) {
-  if (req.session?.name) {
-    next();
-  } else {
-    res.status(401).json({ error: "no autorizado!" });
-  }
-}
-
-export function adminAuth(req, res, next) {
-  if (req.session?.name && req.session?.role === "admin") {
-    next();
-  } else {
-    res.status(401).json({ error: "no autorizado!" });
-  }
-}
+export const checkAuthorization = (roles) => {
+  return async (req, res, next) => {
+    if (!req.user) return res.send({ error: "Not authorized" });
+    if (roles.includes(req.user.role)) next();
+    else res.status(403).send({ error: "User not allowed at this endpoint" });
+  };
+};

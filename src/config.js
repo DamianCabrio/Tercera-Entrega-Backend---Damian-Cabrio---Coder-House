@@ -22,6 +22,7 @@ export default {
   TWILIO_NUMBER: process.env.TWILIO_NUMBER,
   VERIFIED_NUMBER: process.env.VERIFIED_NUMBER,
   URL_BASE: process.env.URL_BASE,
+  JWT_SECRET: process.env.JWT_SECRET,
   mongodb: {
     cnxStr: process.env.MONGODB_URL,
     options: {

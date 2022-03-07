@@ -1,6 +1,7 @@
 import { Router } from "express";
 import productsApi from "../../api/products.js";
-import { adminAuth } from "../../auth/index.js";
+import { checkAuthorization } from "../../auth/index.js";
+import { passportCall } from "../../services/passport-config.js";
 import upload from "../../services/upload.js";
 
 const productsApiRouter = new Router();
@@ -23,8 +24,9 @@ productsApiRouter.get("/:id", async (req, res) => {
 //POST
 productsApiRouter.post(
   "/",
+  passportCall("jwt"),
+  checkAuthorization(["admin"]),
   upload.single("thumbnail"),
-  adminAuth,
   async (req, res) => {
     const product = req.body;
     const result = await productsApi.createOne(product, req.file);
@@ -35,8 +37,9 @@ productsApiRouter.post(
 //UPDATE
 productsApiRouter.put(
   "/:id",
+  passportCall("jwt"),
   upload.single("thumbnail"),
-  adminAuth,
+  checkAuthorization(["admin"]),
   async (req, res) => {
     const id = /^\d+$/.test(req.params.id)
       ? parseInt(req.params.id)
@@ -49,12 +52,17 @@ productsApiRouter.put(
 );
 
 //DELETE
-productsApiRouter.delete("/:id", adminAuth, async (req, res) => {
-  const id = /^\d+$/.test(req.params.id)
-    ? parseInt(req.params.id)
-    : req.params.id;
-  const result = await productsApi.deleteOneById(id);
-  res.status(result.code).json(result);
-});
+productsApiRouter.delete(
+  "/:id",
+  passportCall("jwt"),
+  checkAuthorization(["admin"]),
+  async (req, res) => {
+    const id = /^\d+$/.test(req.params.id)
+      ? parseInt(req.params.id)
+      : req.params.id;
+    const result = await productsApi.deleteOneById(id);
+    res.status(result.code).json(result);
+  }
+);
 
 export default productsApiRouter;
