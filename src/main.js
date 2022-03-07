@@ -22,7 +22,7 @@ app.use(cors());
 app.use(compression());
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({extended : true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.set("view engine", "ejs");
@@ -52,5 +52,6 @@ const connectedServer = app.listen(config.PORT, () => {
   const port = connectedServer.address().port;
   console.log(`Server running at ${process.env.URL_BASE}${port}`);
 });
-connectedServer.on("error",
-                   (error) => console.log(`Error en servidor ${error}`));
+connectedServer.on("error", (error) =>
+  console.log(`Error en servidor ${error}`)
+);
