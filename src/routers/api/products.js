@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import productsApi from "../../api/products.js";
 import { checkAuthorization } from "../../auth/index.js";
 import { passportCall } from "../../services/passport-config.js";
@@ -6,13 +7,13 @@ import upload from "../../services/upload.js";
 
 const productsApiRouter = new Router();
 
-//GET
+// GET
 productsApiRouter.get("/", async (_, res) => {
   const result = await productsApi.getAll();
   res.status(result.code).json(result);
 });
 
-//GET ONE
+// GET ONE
 productsApiRouter.get("/:id", async (req, res) => {
   const id = /^\d+$/.test(req.params.id)
     ? parseInt(req.params.id)
@@ -21,7 +22,7 @@ productsApiRouter.get("/:id", async (req, res) => {
   res.status(result.code).json(result);
 });
 
-//POST
+// POST
 productsApiRouter.post(
   "/",
   passportCall("jwt"),
@@ -34,7 +35,7 @@ productsApiRouter.post(
   }
 );
 
-//UPDATE
+// UPDATE
 productsApiRouter.put(
   "/:id",
   passportCall("jwt"),
@@ -51,7 +52,7 @@ productsApiRouter.put(
   }
 );
 
-//DELETE
+// DELETE
 productsApiRouter.delete(
   "/:id",
   passportCall("jwt"),

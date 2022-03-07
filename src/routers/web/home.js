@@ -1,7 +1,9 @@
 import { Router } from "express";
 import path from "path";
+
 import { checkAuthorization } from "../../auth/index.js";
 import { passportCall } from "../../services/passport-config.js";
+
 const homeWebRouter = new Router();
 
 homeWebRouter.get(

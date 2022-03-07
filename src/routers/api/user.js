@@ -1,4 +1,5 @@
 import express from "express";
+
 import { checkAuthorization } from "../../auth/index.js";
 import { passportCall } from "../../services/passport-config.js";
 

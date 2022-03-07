@@ -1,10 +1,11 @@
 import { Router } from "express";
-import path from "path";
 import jwt from "jsonwebtoken";
+import path from "path";
+
+import { checkAuthorization } from "../../auth/index.js";
+import config from "../../config.js";
 import { passportCall } from "../../services/passport-config.js";
 import upload from "../../services/upload.js";
-import config from "../../config.js";
-import { checkAuthorization } from "../../auth/index.js";
 
 const authWebRouter = new Router();
 

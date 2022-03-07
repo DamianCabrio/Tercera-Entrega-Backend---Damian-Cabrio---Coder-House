@@ -2,6 +2,7 @@ import bCrypt from "bcrypt";
 import fs from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+
 import logger from "../services/logging.js";
 
 const filename = fileURLToPath(import.meta.url);

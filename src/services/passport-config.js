@@ -1,18 +1,21 @@
 import dotenv from "dotenv";
 import passport from "passport";
-import localStrategy from "passport-local";
 import jwt from "passport-jwt";
+import localStrategy from "passport-local";
+
 import users from "../api/user.js";
 import config from "../config.js";
 import {
+  cookieExtractor,
   createHash,
   deleteImage,
   filePath,
   isValidPassword,
   returnMessage,
-  cookieExtractor,
 } from "../utils/functions.js";
+
 import { sendMail } from "./mailer.js";
+
 dotenv.config();
 
 const LocalStrategy = localStrategy.Strategy;

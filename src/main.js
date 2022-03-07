@@ -1,8 +1,10 @@
 import compression from "compression";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import passport from "passport";
+
 import config from "./config.js";
 import cartApiRouter from "./routers/api/cart.js";
 import productsApiRouter from "./routers/api/products.js";
@@ -11,7 +13,6 @@ import authWebRouter from "./routers/web/auth.js";
 import homeWebRouter from "./routers/web/home.js";
 import logger from "./services/logging.js";
 import initializePassportConfig from "./services/passport-config.js";
-import cookieParser from "cookie-parser";
 
 dotenv.config();
 
